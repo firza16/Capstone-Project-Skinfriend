@@ -36,8 +36,8 @@ Our main focus is understanding how to select skincare products based on differe
 ### Cloud Computing:
 - Google Cloud Platform (GCP)
 - Express.js
-- Google OAuth
-- PostgreSQL (via Cloud SQL)
+- Firebase Auth
+- Firestore
 - Postman
 - Visual Studio Code
 - Github
