@@ -112,7 +112,7 @@ userId (string): UID pengguna yang ingin dihapus.
 Endpoint ini digunakan untuk mendapatkan data pengguna berdasarkan UID.
 
 #### Parameter URL:
-userID (string): UID pengguna.
+uid (string): userId pengguna.
 
 #### Response:
 ```json
@@ -136,7 +136,7 @@ Endpoint ini digunakan untuk menghapus semua sesi pengguna dengan UserId dari pe
 #### Body Request:
 ```json
 {
-  "uid": "UID_pengguna"
+  "uid": "userId_pengguna"
 }
 ```
 
