@@ -12,7 +12,7 @@ router.post('/login', authController.login);
 router.delete('/delete/:uid', authController.deleteUser);
 
 // Endpoint update
-router.put('/update/:uid', authController.updateUser);
+router.patch('/update/:uid', authController.updateUser);
 
 // Endpoint dapatkan user
 router.get('/user/:uid', authController.user);

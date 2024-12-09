@@ -14,10 +14,9 @@ const db = admin.firestore();
 // Fungsi untuk mendaftarkan pengguna
 const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { nama, email, password, noTelp, gender } = req.body;
 
-    // Validasi data
-    if (!name || !email || !password) {
+    if (!nama || !email || !password || !noTelp || !gender) {
       throw new Error("Semua field harus diisi");
     }
 
@@ -25,17 +24,27 @@ const register = async (req, res) => {
       throw new Error("Password harus memiliki minimal 6 karakter");
     }
 
+    if (!["Laki-laki", "Perempuan"].includes(gender)) {
+      throw new Error("Jenis kelamin hanya boleh Laki-laki atau Perempuan");
+    }
+
+    if (!/^08\d{8,13}$/.test(noTelp)) {
+      throw new Error("Nomor telepon tidak valid. Harus dimulai dengan '08' dan panjang 10-15 karakter.");
+    }
+
     // Buat pengguna di Firebase Auth
     const userRecord = await admin.auth().createUser({
       email: email,
       password: password,
-      displayName: name,
+      displayName: nama,
     });
 
     // Simpan data pengguna ke Firestore
     const userData = {
-      name: name,
+      nama: nama,
       email: email,
+      noTelp: noTelp,
+      gender: gender,
       userId: userRecord.uid,
     };
     await db.collection("users").doc(userRecord.uid).set(userData);
@@ -79,7 +88,7 @@ const login = async (req, res) => {
       message: "Login berhasil",
       loginResult: {
         userId: localId,
-        name: userData.name,
+        nama: userData.nama,
         token: idToken,
       },
     });
@@ -97,10 +106,7 @@ const deleteUser = async (req, res) => {
   try {
     const { uid } = req.params;
 
-    // Hapus pengguna dari Firebase Auth
     await admin.auth().deleteUser(uid);
-
-    // Hapus data pengguna dari Firestore
     await db.collection("users").doc(uid).delete();
 
     res.status(200).json({ message: "Pengguna berhasil dihapus" });
@@ -113,18 +119,56 @@ const deleteUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { uid } = req.params;
-    const { name, email } = req.body;
+    const { nama, email, noTelp, gender } = req.body;
 
-    // Proses pembaruan pengguna berdasarkan uid di Firebase Auth
-    await admin.auth().updateUser(uid, { displayName: name, email });
+    if (!uid) {
+      throw new Error("UID pengguna harus disertakan");
+    }
 
-    // Proses pembaruan pengguna berdasarkan uid di Firestore
+    const updates = {};
+
+    if (nama) {
+      updates.nama = nama;
+      await admin.auth().updateUser(uid, { displayName: nama });
+    }
+
+    if (email) {
+      updates.email = email;
+      await admin.auth().updateUser(uid, { email });
+    }
+
+    if (noTelp) {
+      if (!/^08\d{8,13}$/.test(noTelp)) {
+        throw new Error("Nomor telepon tidak valid. Harus dimulai dengan '08' dan panjang 10-15 karakter.");
+      }
+      updates.noTelp = noTelp;
+    }
+
+    if (gender) {
+      if (!["Laki-laki", "Perempuan"].includes(gender)) {
+        throw new Error("Jenis kelamin hanya boleh Laki-laki atau Perempuan");
+      }
+      updates.gender = gender;
+    }
+
+    if (Object.keys(updates).length === 0) {
+      throw new Error("Tidak ada field yang valid untuk diperbarui");
+    }
+
     const userRef = db.collection("users").doc(uid);
-    await userRef.update({ name, email });
+    await userRef.update(updates);
 
-    res.status(200).json({ message: "Pengguna berhasil diperbarui" });
+    res.status(200).json({
+      error: false,
+      message: "Pengguna berhasil diperbarui",
+      updatedFields: updates,
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error("Error in updateUser function:", error.message || error);
+    res.status(400).json({
+      error: true,
+      message: error.message || "Terjadi kesalahan saat memperbarui pengguna",
+    });
   }
 };
 
