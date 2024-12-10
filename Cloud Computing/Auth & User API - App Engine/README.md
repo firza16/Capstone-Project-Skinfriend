@@ -16,7 +16,7 @@ API ini dibangun menggunakan Express.js, Firebase Authentication, dan Firestore 
 
 #### Deskripsi:
 
-Endpoint ini digunakan untuk mendaftarkan pengguna baru. Informasi pengguna akan disimpan di Firebase Authentication dan Firestore.
+Endpoint ini digunakan untuk mendaftarkan pengguna baru. Informasi pengguna akan disimpan di Firebase Authentication dan Firestore. Untuk nomor telepon hanya bisa diawali dengan 08 dan untuk gender hanya bisa Male dan Female.
 
 #### Body Request:
 
@@ -26,7 +26,7 @@ Endpoint ini digunakan untuk mendaftarkan pengguna baru. Informasi pengguna akan
   "email": "windut@gmail.com", 
   "password": "password123",
   "noTelp": "081234567890",
-  "gender": "Laki-laki"
+  "gender": "Male"
 }
 ```
 
@@ -153,7 +153,7 @@ uid (string): userId pengguna.
         "nama": "Windah Batubara",
         "email": "windut@gmail.com",
         "noTelp": "081234567890",
-        "gender": "Laki-laki",
+        "gender": "Male",
         "userId": "hYrYJSBn7rM0MDvpxrfKCgRJmy63"
     }
 }
