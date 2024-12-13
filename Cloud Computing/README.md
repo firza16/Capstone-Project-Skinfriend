@@ -98,7 +98,7 @@ Endpoint ini digunakan untuk mendaftarkan pengguna baru. Informasi pengguna akan
 
 ```json
 {
-  "nama": "Windah Batubara",
+  "name": "Windah Batubara",
   "email": "windut@gmail.com", 
   "password": "password123",
   "noTelp": "081234567890",
@@ -143,7 +143,7 @@ Endpoint ini digunakan untuk login pengguna menggunakan email dan password yang 
     "message": "Login berhasil",
     "loginResult": {
         "userId": "hYrYJSBn7rM0MDvpxrfKCgRJmy63",
-        "nama": "Windah Batubara",
+        "name": "Windah Batubara",
         "token": "token"
     }
 }
@@ -189,7 +189,7 @@ userId (string): UID pengguna yang ingin dihapus.
 
 ```json
 {
-  "nama": "Windah Tol Cipularang",
+  "name": "Windah Tol Cipularang",
   "noTelp": "081212121212"
 }
 ```
@@ -201,7 +201,7 @@ userId (string): UID pengguna yang ingin dihapus.
     "error": false,
     "message": "Pengguna berhasil diperbarui",
     "updatedFields": {
-        "nama": "Windah Tol Cipularang",
+        "name": "Windah Tol Cipularang",
         "noTelp": "081212121212"
     }
 }
@@ -226,7 +226,7 @@ uid (string): userId pengguna.
 ```json
 {
     "user": {
-        "nama": "Windah Batubara",
+        "name": "Windah Batubara",
         "email": "windut@gmail.com",
         "noTelp": "081234567890",
         "gender": "Laki-laki",
